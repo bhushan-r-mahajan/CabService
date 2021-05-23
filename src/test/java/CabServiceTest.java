@@ -12,13 +12,11 @@ public class CabServiceTest {
     }
 
     @Test
-    void givenMultipleRides_ShouldReturnAggregateFare() {
+    public void givenRides_ShouldReturnInvoiceSummary() {
         CabService cabService = new CabService();
-        Ride[] rides = { new Ride(2.0, 5),
-                         new Ride(0.4, 5),
-                         new Ride(5.0, 9)
-                       };
-        double totalAggregate = cabService.calculateFare(rides);
-        Assertions.assertEquals(89, totalAggregate );
+        Ride[] rides = { new Ride(2.0, 5), new Ride(0.1, 1) };
+        InvoiceSummary actualInvoiceSummary = cabService.calculateFare(rides);
+        InvoiceSummary expectedInvoiceSummary = new InvoiceSummary(2, 30.0);
+        Assertions.assertEquals(expectedInvoiceSummary, actualInvoiceSummary);
     }
 }
