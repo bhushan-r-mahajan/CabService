@@ -2,6 +2,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class CabServiceTest {
+
     @Test
     void givenDistanceAndTime_ShouldReturnTotalFare() {
         CabService cabService = new CabService();
@@ -22,25 +23,44 @@ public class CabServiceTest {
 
     @Test
     public void givenRides_ShouldReturnInvoiceSummary() {
-        CabService cabService = new CabService();
-        Ride[] rides = { new Ride(2.0, 5), new Ride(1.0, 5) };
-        InvoiceSummary actualInvoiceSummary = cabService.calculateFare(rides);
-        InvoiceSummary expectedInvoiceSummary = new InvoiceSummary(2, 40.0);
+        CabService invoiceGenerator = new CabService();
+        Ride[] rides = {
+                new Ride(2.0, 5, PremiumRides.NORMAL),
+                new Ride(0.1, 1, PremiumRides.NORMAL)
+        };
+        InvoiceSummary actualInvoiceSummary = invoiceGenerator.calculateFare(rides);
+        InvoiceSummary expectedInvoiceSummary = new InvoiceSummary(2, 30.0);
         Assertions.assertEquals(expectedInvoiceSummary, actualInvoiceSummary);
     }
 
     @Test
     public void givenUserIdAndRides_ShouldReturnInvoiceSummary() {
-        String userId = "Bhushan Mahajan";
+        String userId = "Bhushan";
         Ride[] rides = {
-                new Ride(2.0, 5),
-                new Ride(0.1, 1),
-                new Ride(1,2)
+                new Ride(2.0, 5, PremiumRides.NORMAL),
+                new Ride(0.1, 1, PremiumRides.NORMAL),
+                new Ride(1, 2, PremiumRides.NORMAL)
         };
-        CabService cabService = new CabService();
-        cabService.addRides(userId, rides);
-        InvoiceSummary actualInvoiceSummary = cabService.getInvoiceSummary(userId);
+        CabService invoiceGenerator = new CabService();
+        invoiceGenerator.addRides(userId, rides);
+        InvoiceSummary actualInvoiceSummary = invoiceGenerator.getInvoiceSummary(userId);
         InvoiceSummary expectedInvoiceSummary = new InvoiceSummary(3,42.0);
         Assertions.assertEquals(expectedInvoiceSummary, actualInvoiceSummary);
     }
+
+    @Test
+    public void givenUserIdAndRidesForTwoCategoriesRides_ShouldReturnInvoiceSummary() {
+        String userId = "Bhushan";
+        Ride[] rides = {
+                new Ride(2.0, 5, PremiumRides.NORMAL),
+                new Ride(0.1, 1, PremiumRides.PREMIUM),
+                new Ride(2, 2, PremiumRides.PREMIUM)
+        };
+        CabService invoiceGenerator = new CabService();
+        invoiceGenerator.addRides(userId, rides);
+        InvoiceSummary summary = invoiceGenerator.getInvoiceSummary(userId);
+        InvoiceSummary expectedInvoiceSummary = new InvoiceSummary(3, 79);
+        Assertions.assertEquals(expectedInvoiceSummary, summary);
+    }
 }
+

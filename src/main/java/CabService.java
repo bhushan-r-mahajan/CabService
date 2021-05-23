@@ -5,7 +5,7 @@ public class CabService {
     private static final double MINIMUM_FARE = 5;
     private final RideRepository rideRepository;
 
-    public CabService(){
+    public CabService() {
         this.rideRepository = new RideRepository();
     }
 
@@ -17,9 +17,8 @@ public class CabService {
     public InvoiceSummary calculateFare(Ride[] rides) {
         double totalFare = 0;
         for (Ride ride : rides) {
-            totalFare += this.calculateFare(ride.distance, ride.time);
+            totalFare += ride.cabRide.calculateCostOfCabRide(ride);
         }
-        System.out.println("The Total fare for all rides is = " + totalFare);
         return new InvoiceSummary(rides.length, totalFare);
     }
 
