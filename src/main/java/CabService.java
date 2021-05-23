@@ -10,4 +10,13 @@ public class CabService {
         }
         return fare;
     }
+
+    public double calculateFare(Ride[] rides) {
+        double totalFare = 0;
+        for (Ride ride: rides) {
+            totalFare += this.calculateFare(ride.distance, ride.time);
+        }
+        System.out.println("The Total fare for all the rides is = '" + totalFare + "Rs'");
+        return totalFare;
+    }
 }
