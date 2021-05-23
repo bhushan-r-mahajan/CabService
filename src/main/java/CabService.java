@@ -3,6 +3,11 @@ public class CabService {
     private static final int COST_PER_TIME = 1;
     private static final double MINIMUM_COST_PER_KILOMETER = 10;
     private static final double MINIMUM_FARE = 5;
+    private final RideRepository rideRepository;
+
+    public CabService(){
+        this.rideRepository = new RideRepository();
+    }
 
     public double calculateFare(double distance, int time) {
         double totalFare = (distance * MINIMUM_COST_PER_KILOMETER + time * COST_PER_TIME);
@@ -14,6 +19,15 @@ public class CabService {
         for (Ride ride : rides) {
             totalFare += this.calculateFare(ride.distance, ride.time);
         }
+        System.out.println("The Total fare for all rides is = " + totalFare);
         return new InvoiceSummary(rides.length, totalFare);
+    }
+
+    public InvoiceSummary getInvoiceSummary(String userId) {
+        return this.calculateFare(rideRepository.getRides(userId));
+    }
+
+    public void addRides(String userId, Ride[] rides) {
+        rideRepository.addRides(userId, rides);
     }
 }
